@@ -1,88 +1,110 @@
-# Cocopua
+# Cocopua HP
 
-アイサロン向けホームページ制作プロジェクトです。
+アイサロン Cocopua のホームページ制作プロジェクトです。
 
-## 方針（2026-04-22時点）
+## プロジェクト概要
 
-- 予約機能は自前実装せず、外部SaaSへの導線に集約する
-- フロントエンドはNext.jsではなくReactで構築する
-- UIはshadcn/uiを活用し、最小工数で清潔感のあるデザインを作る
-- 運用向けに「お知らせ投稿画面（管理用）」を用意する
+- 目的: サロンの魅力訴求と予約導線の最適化
+- 優先: モバイル体験（360px-430px）と離脱しにくい予約導線
+- 方針: 高コストな独自機能を避け、運用しやすいMVPを先行リリース
+
+## 決定事項（固定）
+
+- 予約は外部SaaSを利用し、自前予約システムは実装しない
+- フロントエンドは React + Vite + TypeScript（Next.jsは採用しない）
+- UI は shadcn/ui を活用して品質と実装速度を両立する
+- お知らせ機能は公開側（一覧・詳細）と管理側（投稿・編集・削除・公開管理）を用意する
+
+## MVPスコープ
+
+### 公開側
+
+- Top
+- Menu
+- Gallery
+- Staff
+- Access
+- FAQ
+- Reservation（外部予約SaaSへの導線）
+- News（一覧・詳細）
+
+### 管理側
+
+- News Admin（投稿・編集・削除・公開/非公開）
+
+## 技術スタック
+
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui
+- React Router
+
+## ドキュメント
+
+- 実装ルール: `.github/copilot-instructions.md`
+- 設計書: `docs/design-spec.md`
+- ロゴ運用: `assets/brand/LOGO_USAGE.md`
 
 ## ロゴ運用
 
-- 店舗ロゴは `assets/brand/cocopua-logo.jpg` として配置する
-- 利用ルールは `assets/brand/LOGO_USAGE.md` を参照する
-- ヘッダー・フッター・OG画像で同一ブランドロゴを使い、見た目の一貫性を保つ
+- ロゴ本体: `assets/brand/cocopua-logo.jpg`
+- ヘッダー・フッター・OG画像に同一ロゴを利用して一貫性を保つ
 
-## 目的
+## セットアップ
 
-- 予約導線が分かりやすいサイトを作る
-- サロンの雰囲気と信頼感を伝える
-- スマホでの閲覧・操作を最優先に最適化する
-
-## 想定ページ構成
-
-- Top（ファーストビュー、特徴、CTA）
-- Menu（施術メニューと料金）
-- Gallery（デザイン実績）
-- Staff（スタッフ紹介）
-- Access（住所、営業時間、地図）
-- FAQ（よくある質問）
-- Reservation（外部予約SaaSへの導線ページ）
-- News（お知らせ一覧）
-
-## 管理画面（最小構成）
-
-- News Admin（お知らせ投稿画面）
-- 必須機能: 投稿、編集、削除、公開/非公開
-- 将来拡張を見据えつつ、まずはシンプルな運用を優先する
-
-## 技術スタック（初期案）
-
-- React + TypeScript
-- Vite（軽量な開発環境）
-- shadcn/ui（UIコンポーネント）
-- React Router（画面遷移）
-- 状態管理はまず最小（Context またはローカル状態）
-
-## 初期開発方針
-
-- 日本語を基本言語とする
-- モバイルファーストで設計する
-- 主要CTA（予約）は全ページから外部SaaSへ到達可能にする
-- 画像は軽量化し、ページ表示速度を意識する
-- アクセシビリティ（コントラスト、代替テキスト、見出し構造）を担保する
-- 予約ロジックは実装せず、SaaS連携の品質（導線、文言、離脱防止）に注力する
-
-## ディレクトリ方針（案）
-
-```text
-.
-├── README.md
-├── .github/
-│   └── copilot-instructions.md
-└── src/
-    ├── pages/
-    │   ├── public/
-    │   └── admin/
-    ├── components/
-    ├── styles/
-    ├── features/
-    │   └── news/
-    └── assets/
+```bash
+npm install
 ```
 
-## 次のステップ
+## Dockerでの起動
 
-1. Publicページ（Top/Menu/Reservation/News）の骨組み実装
-2. News Admin（投稿画面）の最小実装
-3. 外部予約SaaSの導線ボタンを全ページ共通化
-4. 店舗情報・メニュー情報の本番文言反映
+```bash
+cp .env.example .env
+docker compose up --build
+```
+
+- アクセス先: `http://localhost:5173`
+- 停止: `docker compose down`
+- 依存更新時: `docker compose build --no-cache`
 
 ## 開発コマンド
 
-- 依存インストール: npm install
-- 開発サーバー起動: npm run dev
-- 本番ビルド: npm run build
-- プレビュー: npm run preview
+```bash
+npm run dev
+npm run build
+npm run preview
+```
+
+## 環境変数
+
+- `VITE_RESERVATION_URL`: 予約SaaSの遷移先URL
+
+## ディレクトリ方針
+
+```text
+.
+├── .github/
+│   └── copilot-instructions.md
+├── assets/
+│   └── brand/
+├── docs/
+│   └── design-spec.md
+├── src/
+│   ├── components/
+│   ├── features/
+│   │   └── news/
+│   ├── pages/
+│   │   ├── public/
+│   │   └── admin/
+│   └── lib/
+└── README.md
+```
+
+## 直近タスク
+
+1. ルーティング導入と公開側ページ骨組み作成
+2. お知らせ管理画面の最小CRUD実装
+3. 予約SaaSリンクを共通CTAコンポーネント化
+4. 店舗情報・メニュー情報の本番コンテンツ反映
