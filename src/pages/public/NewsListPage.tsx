@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 
 import { useNewsList } from '@/features/news/hooks/useNewsList'
 
@@ -11,11 +12,75 @@ function formatDate(dateText: string) {
 }
 
 export function NewsListPage() {
-  const { newsList, isLoading, error, page, totalPages, setPage } = useNewsList()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const { newsList, isLoading, error, page, totalPages, setPage, search, setSearch } = useNewsList()
+
+  useEffect(() => {
+    const pageFromQuery = Number(searchParams.get('page') ?? '1')
+    const searchFromQuery = searchParams.get('search') ?? ''
+
+    if (!Number.isNaN(pageFromQuery) && pageFromQuery > 0 && pageFromQuery !== page) {
+      setPage(pageFromQuery)
+    }
+
+    if (searchFromQuery !== search) {
+      setSearch(searchFromQuery)
+    }
+  }, [searchParams])
+
+  useEffect(() => {
+    const nextParams = new URLSearchParams()
+
+    if (page > 1) {
+      nextParams.set('page', String(page))
+    }
+
+    if (search.trim()) {
+      nextParams.set('search', search.trim())
+    }
+
+    if (nextParams.toString() !== searchParams.toString()) {
+      setSearchParams(nextParams, { replace: true })
+    }
+  }, [page, search, searchParams, setSearchParams])
+
+  function buildDetailLink(newsId: number) {
+    const detailParams = new URLSearchParams()
+
+    if (page > 1) {
+      detailParams.set('fromPage', String(page))
+    }
+
+    if (search.trim()) {
+      detailParams.set('fromSearch', search.trim())
+    }
+
+    const queryString = detailParams.toString()
+    return queryString ? `/news/${newsId}?${queryString}` : `/news/${newsId}`
+  }
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-12">
       <h1 className="font-serif-en text-4xl text-[var(--text-main)]">News</h1>
+
+      <form
+        className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center"
+        onSubmit={(event) => {
+          event.preventDefault()
+          setPage(1)
+        }}
+      >
+        <input
+          type="search"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          placeholder="キーワードで検索"
+          className="h-11 w-full rounded-full border border-[var(--line-soft)] bg-white px-4 font-ui text-sm text-[var(--text-main)] outline-none focus:border-[#d9c1bb] sm:max-w-sm"
+        />
+        <button type="submit" className="btn-pill border border-[var(--line-soft)] bg-white text-sm text-[var(--text-main)]">
+          検索する
+        </button>
+      </form>
 
       {isLoading ? (
         <div className="mt-8 h-28 animate-pulse rounded-2xl border border-[var(--line-soft)] bg-white/70" />
@@ -29,13 +94,19 @@ export function NewsListPage() {
             {newsList.map((news) => (
               <Link
                 key={news.id}
-                to={`/news/${news.id}`}
+                to={buildDetailLink(news.id)}
                 className="rounded-2xl border border-[var(--line-soft)] bg-white p-5 transition hover:border-[#d9c1bb]"
               >
                 <p className="text-xs text-[var(--text-muted)]">{formatDate(news.date)}</p>
                 <p className="mt-2 text-base font-medium text-[var(--text-main)]">{news.title}</p>
               </Link>
             ))}
+
+            {newsList.length === 0 ? (
+              <p className="rounded-xl border border-[var(--line-soft)] bg-white p-5 font-ui text-sm text-[var(--text-muted)]">
+                該当するお知らせは見つかりませんでした。
+              </p>
+            ) : null}
           </div>
 
           <div className="mt-8 flex items-center justify-center gap-3">

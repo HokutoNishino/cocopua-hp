@@ -6,6 +6,12 @@ export type NewsItem = {
   modified: string
 }
 
+export type NewsListQuery = {
+  page?: number
+  perPage?: number
+  search?: string
+}
+
 export type WpNewsItem = {
   id: number
   title: { rendered: string }

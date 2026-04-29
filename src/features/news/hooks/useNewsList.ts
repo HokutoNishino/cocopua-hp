@@ -6,6 +6,7 @@ import type { NewsItem } from '@/features/news/types'
 export function useNewsList() {
   const perPage = 6
   const [page, setPage] = useState(1)
+  const [search, setSearch] = useState('')
   const [newsList, setNewsList] = useState<NewsItem[]>([])
   const [totalPages, setTotalPages] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
@@ -19,7 +20,7 @@ export function useNewsList() {
       setError(null)
 
       try {
-        const data = await fetchNewsList(page, perPage)
+        const data = await fetchNewsList({ page, perPage, search })
         if (!isMounted) return
         setNewsList(data.items)
         setTotalPages(data.totalPages)
@@ -37,7 +38,7 @@ export function useNewsList() {
     return () => {
       isMounted = false
     }
-  }, [page])
+  }, [page, search])
 
-  return { newsList, isLoading, error, page, totalPages, setPage }
+  return { newsList, isLoading, error, page, totalPages, setPage, search, setSearch }
 }

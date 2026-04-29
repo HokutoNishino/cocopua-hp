@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 
 import { useNewsDetail } from '@/features/news/hooks/useNewsDetail'
 import { sanitizeHtml } from '@/lib/sanitizeHtml'
@@ -13,8 +13,23 @@ function formatDate(dateText: string) {
 
 export function NewsDetailPage() {
   const { id } = useParams()
+  const [searchParams] = useSearchParams()
   const parsedId = id ? Number(id) : null
   const { newsItem, isLoading, error } = useNewsDetail(Number.isNaN(parsedId) ? null : parsedId)
+
+  const fromPage = searchParams.get('fromPage')
+  const fromSearch = searchParams.get('fromSearch')
+  const backParams = new URLSearchParams()
+
+  if (fromPage) {
+    backParams.set('page', fromPage)
+  }
+
+  if (fromSearch) {
+    backParams.set('search', fromSearch)
+  }
+
+  const backToListLink = backParams.toString() ? `/news?${backParams.toString()}` : '/news'
 
   return (
     <section className="mx-auto max-w-3xl px-4 py-12">
@@ -41,7 +56,7 @@ export function NewsDetailPage() {
         ) : null}
 
         <div className="mt-6">
-          <Link to="/news" className="text-sm font-medium text-[var(--text-main)] underline underline-offset-4">
+          <Link to={backToListLink} className="text-sm font-medium text-[var(--text-main)] underline underline-offset-4">
             お知らせ一覧に戻る
           </Link>
         </div>

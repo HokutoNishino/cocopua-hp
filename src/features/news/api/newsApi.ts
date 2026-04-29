@@ -1,4 +1,4 @@
-import type { NewsItem, WpNewsItem } from '@/features/news/types'
+import type { NewsItem, NewsListQuery, WpNewsItem } from '@/features/news/types'
 
 export type NewsListResult = {
   items: NewsItem[]
@@ -36,22 +36,52 @@ function getApiBaseUrl() {
   return import.meta.env.VITE_API_URL?.replace(/\/$/, '')
 }
 
-export async function fetchNewsList(page = 1, perPage = 10): Promise<NewsListResult> {
+function applyFallbackSearch(items: NewsItem[], search: string | undefined) {
+  const keyword = search?.trim().toLowerCase()
+
+  if (!keyword) {
+    return items
+  }
+
+  return items.filter((item) => {
+    const title = item.title.toLowerCase()
+    const content = item.content.toLowerCase()
+    return title.includes(keyword) || content.includes(keyword)
+  })
+}
+
+export async function fetchNewsList(query: NewsListQuery = {}): Promise<NewsListResult> {
+  const page = query.page ?? 1
+  const perPage = query.perPage ?? 10
+  const search = query.search?.trim()
   const baseUrl = getApiBaseUrl()
 
   if (!baseUrl) {
-    const totalPages = Math.max(1, Math.ceil(fallbackNewsList.length / perPage))
+    const filtered = applyFallbackSearch(fallbackNewsList, search)
+    const totalPages = Math.max(1, Math.ceil(filtered.length / perPage))
     const start = (page - 1) * perPage
     const end = start + perPage
     return {
-      items: fallbackNewsList.slice(start, end),
+      items: filtered.slice(start, end),
       totalPages,
     }
   }
 
   try {
+    const params = new URLSearchParams({
+      status: 'publish',
+      per_page: String(perPage),
+      page: String(page),
+      orderby: 'date',
+      order: 'desc',
+    })
+
+    if (search) {
+      params.set('search', search)
+    }
+
     const response = await fetch(
-      `${baseUrl}/wp-json/wp/v2/news?status=publish&per_page=${perPage}&page=${page}&orderby=date&order=desc`,
+      `${baseUrl}/wp-json/wp/v2/news?${params.toString()}`,
     )
 
     if (!response.ok) {
@@ -66,11 +96,12 @@ export async function fetchNewsList(page = 1, perPage = 10): Promise<NewsListRes
       totalPages: Number.isNaN(totalPages) || totalPages < 1 ? 1 : totalPages,
     }
   } catch {
-    const totalPages = Math.max(1, Math.ceil(fallbackNewsList.length / perPage))
+    const filtered = applyFallbackSearch(fallbackNewsList, search)
+    const totalPages = Math.max(1, Math.ceil(filtered.length / perPage))
     const start = (page - 1) * perPage
     const end = start + perPage
     return {
-      items: fallbackNewsList.slice(start, end),
+      items: filtered.slice(start, end),
       totalPages,
     }
   }
