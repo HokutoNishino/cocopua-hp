@@ -47,7 +47,7 @@
 
 - **WordPress** 6.0+
 - **PHP** 8.1+
-- **MySQL** 5.7+
+- **MySQL** 8.4 LTS（安定版）
 - **REST API** 標準機能 + カスタム拡張
 
 ## MVPスコープ
@@ -73,7 +73,10 @@
 
 | ドキュメント | 用途 |
 |-----------|------|
-| [設計書](docs/design-spec.md) | 仕様・API・実装ルール |
+| [設計書インデックス](docs/design-spec.md) | 分割設計書の導線 |
+| [フロントエンド設計](docs/frontend-spec.md) | 画面設計・UI仕様・コンポーネント |
+| [バックエンド設計](docs/backend-spec.md) | WordPress構成・REST API・運用 |
+| [DB設計](docs/database-spec.md) | MySQL方針・バックアップ・監視 |
 | [Copilot 指示](https://github.com/HokutoNishino/cocopua-hp/blob/main/.github/copilot-instructions.md) | 実装ガイドラインと優先順位 |
 | [ロゴ運用](assets/brand/LOGO_USAGE.md) | ブランドガイドライン |
 
@@ -134,7 +137,10 @@ REST API は自動有効化されます。
 ```
 cocopua-hp/
 ├── docs/
-│   └── design-spec.md          # 仕様書（API, コンポーネント設計）
+│   ├── design-spec.md           # 設計書インデックス
+│   ├── frontend-spec.md         # フロントエンド設計
+│   ├── backend-spec.md          # バックエンド設計
+│   └── database-spec.md         # DB設計（MySQL 8.4 LTS）
 ├── public/                      # 静的アセット
 ├── src/
 │   ├── components/
@@ -255,14 +261,16 @@ npm run preview
 ├── assets/
 │   └── brand/
 ├── docs/
-│   └── design-spec.md
+│   ├── design-spec.md
+│   ├── frontend-spec.md
+│   ├── backend-spec.md
+│   └── database-spec.md
 ├── src/
 │   ├── components/
 │   ├── features/
 │   │   └── news/
 │   ├── pages/
-│   │   ├── public/
-│   │   └── admin/
+│   │   └── public/
 │   └── lib/
 └── README.md
 ```
@@ -270,6 +278,6 @@ npm run preview
 ## 直近タスク
 
 1. ルーティング導入と公開側ページ骨組み作成
-2. お知らせ管理画面の最小CRUD実装
+2. WordPress側のNews運用フロー整備（CPT/公開設定）
 3. 予約SaaSリンクを共通CTAコンポーネント化
 4. 店舗情報・メニュー情報の本番コンテンツ反映

@@ -9,7 +9,7 @@
 ### 技術構成
 
 - **フロントエンド（このリポジトリ）**: React + TypeScript + Vite
-- **バックエンド**: WordPress（別プロジェクト） + REST API
+- **バックエンド**: WordPress（別プロジェクト） + REST API + MySQL 8.4 LTS
 - **通信**: REST API 経由でデータ連携
 
 ## 優先順位
