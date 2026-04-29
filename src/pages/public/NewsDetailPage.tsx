@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 
 import { useNewsDetail } from '@/features/news/hooks/useNewsDetail'
+import { sanitizeHtml } from '@/lib/sanitizeHtml'
 
 function formatDate(dateText: string) {
   return new Date(dateText).toLocaleDateString('ja-JP', {
@@ -30,7 +31,12 @@ export function NewsDetailPage() {
           <>
             <p className="text-xs text-[var(--text-muted)]">{formatDate(newsItem.date)}</p>
             <h1 className="mt-2 font-serif-ja text-3xl text-[var(--text-main)]">{newsItem.title}</h1>
-            <p className="mt-4 whitespace-pre-wrap text-sm leading-relaxed text-[var(--text-muted)]">{newsItem.content.replace(/<[^>]*>/g, '')}</p>
+            <div
+              className="mt-4 space-y-3 text-sm leading-relaxed text-[var(--text-muted)] [&_a]:underline [&_a]:underline-offset-2"
+              dangerouslySetInnerHTML={{
+                __html: sanitizeHtml(newsItem.content),
+              }}
+            />
           </>
         ) : null}
 

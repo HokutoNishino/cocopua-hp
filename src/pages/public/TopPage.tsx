@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 
-import logo from '../../../assets/brand/cocopua-logo.jpg'
 import { useTopContent } from '@/features/top/hooks/useTopContent'
 
 export function TopPage() {
@@ -48,9 +47,7 @@ export function TopPage() {
               <p className="font-serif-en text-xs text-[var(--text-muted)]">special</p>
               <p className="mt-1 font-serif-en text-xl text-[var(--text-main)]">{topContent.heroBadgeText}</p>
             </div>
-            <div className="flex h-full min-h-[380px] items-end justify-center p-8">
-              <img src={logo} alt="Cocopua" className="h-40 w-40 rounded-full border border-white/70 object-cover sm:h-52 sm:w-52" />
-            </div>
+            <img src={topContent.heroImageUrl} alt="施術イメージ" className="h-full min-h-[380px] w-full object-cover" />
           </div>
         </div>
       </section>
@@ -84,11 +81,7 @@ export function TopPage() {
 
         <div className="rounded-2xl border border-[var(--line-soft)] bg-[linear-gradient(135deg,#f7ece8,#efe2de)] p-6 sm:p-8">
           <p className="font-serif-en text-3xl text-[var(--text-main)]">Design your beauty.</p>
-          <div className="mt-6 grid grid-cols-3 gap-3">
-            <div className="h-28 rounded-xl border border-[var(--line-soft)] bg-white/70" />
-            <div className="h-28 rounded-xl border border-[var(--line-soft)] bg-white/70" />
-            <div className="h-28 rounded-xl border border-[var(--line-soft)] bg-white/70" />
-          </div>
+          <img src={topContent.menuVisualImageUrl} alt="メニュー訴求画像" className="mt-6 h-56 w-full rounded-xl border border-[var(--line-soft)] object-cover" />
         </div>
       </section>
 
@@ -96,6 +89,7 @@ export function TopPage() {
         <article className="rounded-2xl border border-[var(--line-soft)] bg-white p-6 sm:p-8">
           <h2 className="font-serif-en text-4xl text-[var(--text-main)]">About</h2>
           <p className="mt-5 font-ui text-sm leading-7 text-[var(--text-muted)]">{topContent.aboutText}</p>
+          <img src={topContent.aboutImageUrl} alt="サロン内観" className="mt-6 h-48 w-full rounded-xl border border-[var(--line-soft)] object-cover" />
           <Link to="/staff" className="btn-pill mt-8 border border-[var(--line-soft)] bg-white text-[var(--text-main)] hover:bg-[var(--bg-sub)]">
             もっと見る
           </Link>
@@ -104,9 +98,14 @@ export function TopPage() {
         <article className="rounded-2xl border border-[var(--line-soft)] bg-white p-6 sm:p-8">
           <h2 className="font-serif-en text-4xl text-[var(--text-main)]">Gallery</h2>
           <div className="mt-5 grid grid-cols-3 gap-3">
-            <div className="h-24 rounded-lg border border-[var(--line-soft)] bg-[var(--bg-sub)]" />
-            <div className="h-24 rounded-lg border border-[var(--line-soft)] bg-[var(--bg-sub)]" />
-            <div className="h-24 rounded-lg border border-[var(--line-soft)] bg-[var(--bg-sub)]" />
+            {topContent.galleryImageUrls.slice(0, 3).map((imageUrl, index) => (
+              <img
+                key={`${imageUrl}-${index}`}
+                src={imageUrl}
+                alt={`ギャラリー画像 ${index + 1}`}
+                className="h-24 w-full rounded-lg border border-[var(--line-soft)] object-cover"
+              />
+            ))}
           </div>
           <Link to="/gallery" className="btn-pill mt-8 border border-[var(--line-soft)] bg-white text-[var(--text-main)] hover:bg-[var(--bg-sub)]">
             ギャラリーを見る
