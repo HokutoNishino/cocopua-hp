@@ -57,7 +57,7 @@
 
 - **フロントエンド**: React + TypeScript + Vite を標準とする
 - **UI**: shadcn/ui を優先利用し、独自UIは必要最小限にする
-- **API クライアント**: 
+- **API クライアント**:
   - `src/features/news/api/` に REST API 呼び出しロジックを集約
   - Axios か Fetch API を使用
   - エラーハンドリングを実装する
@@ -67,11 +67,11 @@
 ## REST API 連携ルール
 
 - **Base URL**: 環境変数 `VITE_API_URL` から取得
-- **Error Handling**: 
+- **Error Handling**:
   - 404: NotFound ページへ誘導
   - 500: ユーザーフレンドリーなエラー表示
   - Network Error: リトライロジック実装
-- **キャッシング**: 
+- **キャッシング**:
   - News 一覧は max-age=3600（1時間）
   - News 詳細は max-age=1800（30分）
 
@@ -88,16 +88,16 @@
 
 - **管理**: WordPress（CPT: News）
 - **配信**: REST API（`/wp-json/wp/v2/news`）
-- **スキーマ**: 
+- **スキーマ**:
   ```ts
   type NewsItem = {
-    id: number
-    title: string
-    content: string
-    status: 'publish' | 'draft'
-    date: string
-    modified: string
-  }
+    id: number;
+    title: string;
+    content: string;
+    status: "publish" | "draft";
+    date: string;
+    modified: string;
+  };
   ```
 
 ### React 状態管理
@@ -136,4 +136,3 @@
 - エラー: API 失敗時にユーザーフレンドリーなエラー表示か
 - パフォーマンス: 不要画像・不要依存が増えていないか
 - CORS: WordPress と React ホスト間の CORS 設定は正しいか
-

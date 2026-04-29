@@ -25,11 +25,11 @@
 
 ### 責務分離
 
-| 機能 | 管理場所 | 技術 |
-|------|--------|------|
-| **お知らせ CRUD** | WordPress 管理画面 | PHP + MySQL |
+| 機能               | 管理場所             | 技術               |
+| ------------------ | -------------------- | ------------------ |
+| **お知らせ CRUD**  | WordPress 管理画面   | PHP + MySQL        |
 | **公開ページ表示** | React フロントエンド | React + TypeScript |
-| **データ配信** | WordPress REST API | JSON |
+| **データ配信**     | WordPress REST API   | JSON               |
 
 ## 技術スタック
 
@@ -71,24 +71,24 @@
 
 ## ドキュメント
 
-| ドキュメント | 用途 |
-|-----------|------|
-| [設計書インデックス](docs/design-spec.md) | 分割設計書の導線 |
-| [フロントエンド設計](docs/frontend-spec.md) | 画面設計・UI仕様・コンポーネント |
-| [バックエンド設計](docs/backend-spec.md) | WordPress構成・REST API・運用 |
-| [DB設計](docs/database-spec.md) | MySQL方針・バックアップ・監視 |
-| [実装ロードマップ](docs/tickets/roadmap.md) | 並走開発のマイルストーン |
-| [FE実装チケット](docs/tickets/frontend-tickets.md) | フロントエンド作業分解 |
-| [BE実装チケット](docs/tickets/backend-tickets.md) | WordPress作業分解 |
-| [DB実装チケット](docs/tickets/database-tickets.md) | MySQL作業分解 |
-| [Copilot 指示](https://github.com/HokutoNishino/cocopua-hp/blob/main/.github/copilot-instructions.md) | 実装ガイドラインと優先順位 |
-| [ロゴ運用](assets/brand/LOGO_USAGE.md) | ブランドガイドライン |
+| ドキュメント                                                                                          | 用途                             |
+| ----------------------------------------------------------------------------------------------------- | -------------------------------- |
+| [設計書インデックス](docs/design-spec.md)                                                             | 分割設計書の導線                 |
+| [フロントエンド設計](docs/frontend-spec.md)                                                           | 画面設計・UI仕様・コンポーネント |
+| [バックエンド設計](docs/backend-spec.md)                                                              | WordPress構成・REST API・運用    |
+| [DB設計](docs/database-spec.md)                                                                       | MySQL方針・バックアップ・監視    |
+| [実装ロードマップ](docs/tickets/roadmap.md)                                                           | 並走開発のマイルストーン         |
+| [FE実装チケット](docs/tickets/frontend-tickets.md)                                                    | フロントエンド作業分解           |
+| [BE実装チケット](docs/tickets/backend-tickets.md)                                                     | WordPress作業分解                |
+| [DB実装チケット](docs/tickets/database-tickets.md)                                                    | MySQL作業分解                    |
+| [Copilot 指示](https://github.com/HokutoNishino/cocopua-hp/blob/main/.github/copilot-instructions.md) | 実装ガイドラインと優先順位       |
+| [ロゴ運用](assets/brand/LOGO_USAGE.md)                                                                | ブランドガイドライン             |
 
 ## セットアップ
 
 ### 前提環境
 
-- Node.js 18+ 
+- Node.js 18+
 - npm 或いは yarn
 - （オプション）Docker（WordPress ローカル開発用）
 
