@@ -1,16 +1,34 @@
 import { useEffect, useState } from 'react'
 
-import { fetchNewsList } from '@/features/news/api/newsApi'
-import type { NewsItem } from '@/features/news/types'
+import { fetchNewsCategories, fetchNewsList } from '@/features/news/api/newsApi'
+import type { NewsCategory, NewsItem } from '@/features/news/types'
 
 export function useNewsList() {
   const perPage = 6
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
+  const [categoryId, setCategoryId] = useState<number | null>(null)
+  const [categories, setCategories] = useState<NewsCategory[]>([])
   const [newsList, setNewsList] = useState<NewsItem[]>([])
   const [totalPages, setTotalPages] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let isMounted = true
+
+    const loadCategories = async () => {
+      const data = await fetchNewsCategories()
+      if (!isMounted) return
+      setCategories(data)
+    }
+
+    void loadCategories()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
 
   useEffect(() => {
     let isMounted = true
@@ -20,7 +38,7 @@ export function useNewsList() {
       setError(null)
 
       try {
-        const data = await fetchNewsList({ page, perPage, search })
+        const data = await fetchNewsList({ page, perPage, search, categoryId })
         if (!isMounted) return
         setNewsList(data.items)
         setTotalPages(data.totalPages)
@@ -38,7 +56,19 @@ export function useNewsList() {
     return () => {
       isMounted = false
     }
-  }, [page, search])
+  }, [page, search, categoryId])
 
-  return { newsList, isLoading, error, page, totalPages, setPage, search, setSearch }
+  return {
+    newsList,
+    categories,
+    isLoading,
+    error,
+    page,
+    totalPages,
+    setPage,
+    search,
+    setSearch,
+    categoryId,
+    setCategoryId,
+  }
 }

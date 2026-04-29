@@ -13,11 +13,25 @@ function formatDate(dateText: string) {
 
 export function NewsListPage() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const { newsList, isLoading, error, page, totalPages, setPage, search, setSearch } = useNewsList()
+  const {
+    newsList,
+    categories,
+    isLoading,
+    error,
+    page,
+    totalPages,
+    setPage,
+    search,
+    setSearch,
+    categoryId,
+    setCategoryId,
+  } = useNewsList()
 
   useEffect(() => {
     const pageFromQuery = Number(searchParams.get('page') ?? '1')
     const searchFromQuery = searchParams.get('search') ?? ''
+    const categoryFromQueryRaw = searchParams.get('category')
+    const categoryFromQuery = categoryFromQueryRaw ? Number(categoryFromQueryRaw) : null
 
     if (!Number.isNaN(pageFromQuery) && pageFromQuery > 0 && pageFromQuery !== page) {
       setPage(pageFromQuery)
@@ -26,7 +40,11 @@ export function NewsListPage() {
     if (searchFromQuery !== search) {
       setSearch(searchFromQuery)
     }
-  }, [searchParams])
+
+    if ((Number.isNaN(categoryFromQuery) ? null : categoryFromQuery) !== categoryId) {
+      setCategoryId(Number.isNaN(categoryFromQuery) ? null : categoryFromQuery)
+    }
+  }, [searchParams, page, search, categoryId, setPage, setSearch, setCategoryId])
 
   useEffect(() => {
     const nextParams = new URLSearchParams()
@@ -39,10 +57,14 @@ export function NewsListPage() {
       nextParams.set('search', search.trim())
     }
 
+    if (categoryId) {
+      nextParams.set('category', String(categoryId))
+    }
+
     if (nextParams.toString() !== searchParams.toString()) {
       setSearchParams(nextParams, { replace: true })
     }
-  }, [page, search, searchParams, setSearchParams])
+  }, [page, search, categoryId, searchParams, setSearchParams])
 
   function buildDetailLink(newsId: number) {
     const detailParams = new URLSearchParams()
@@ -70,6 +92,22 @@ export function NewsListPage() {
           setPage(1)
         }}
       >
+        <select
+          value={categoryId ?? ''}
+          onChange={(event) => {
+            const nextValue = event.target.value
+            setCategoryId(nextValue ? Number(nextValue) : null)
+            setPage(1)
+          }}
+          className="h-11 rounded-full border border-[var(--line-soft)] bg-white px-4 font-ui text-sm text-[var(--text-main)] outline-none focus:border-[#d9c1bb]"
+        >
+          <option value="">すべてのカテゴリ</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
         <input
           type="search"
           value={search}

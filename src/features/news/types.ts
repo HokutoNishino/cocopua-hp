@@ -4,12 +4,19 @@ export type NewsItem = {
   content: string
   date: string
   modified: string
+  categoryIds: number[]
 }
 
 export type NewsListQuery = {
   page?: number
   perPage?: number
   search?: string
+  categoryId?: number | null
+}
+
+export type NewsCategory = {
+  id: number
+  name: string
 }
 
 export type WpNewsItem = {
@@ -18,4 +25,10 @@ export type WpNewsItem = {
   content: { rendered: string }
   date: string
   modified: string
+  categories?: number[]
+}
+
+export type WpNewsCategory = {
+  id: number
+  name: string
 }
