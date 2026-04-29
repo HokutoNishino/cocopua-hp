@@ -59,7 +59,6 @@ export function PublicLayout() {
             <p className="text-sm font-medium">Cocopua</p>
             <p className="text-sm text-zinc-500">東京都〇〇区〇〇 1-2-3 / 10:00-19:00 / 最寄り駅: 〇〇駅</p>
           </div>
-          <ReservationCta />
         </div>
       </footer>
     </div>
