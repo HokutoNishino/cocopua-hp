@@ -14,31 +14,31 @@ const links = [
 
 export function PublicLayout() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-rose-50 via-white to-orange-50 text-zinc-700">
-      <header className="border-b border-rose-100 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
+    <div className="min-h-screen bg-[var(--bg-base)] text-[var(--text-main)]">
+      <header className="sticky top-0 z-20 border-b border-[var(--line-soft)] bg-white/85 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
           <NavLink to="/" className="flex items-center gap-3">
             <img
               src={logo}
               alt="Cocopua ロゴ"
-              className="h-12 w-12 rounded-xl border border-rose-100 object-cover"
+              className="h-12 w-12 rounded-full border border-[var(--line-soft)] object-cover"
             />
             <div>
-              <p className="text-xs tracking-wide text-rose-400">Beauté du Regard</p>
-              <p className="text-lg font-semibold">Cocopua</p>
+              <p className="font-ui text-xs tracking-[0.2em] text-[var(--text-muted)]">Beauté du Regard</p>
+              <p className="font-serif-en text-3xl leading-none">Cocopua</p>
             </div>
           </NavLink>
 
-          <nav className="flex flex-wrap items-center gap-2 text-sm">
+          <nav className="flex flex-wrap items-center gap-1 font-ui text-sm sm:gap-2">
             {links.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
                 className={({ isActive }) =>
-                  `rounded-lg px-3 py-2 transition ${
+                  `rounded-full px-3 py-2 transition ${
                     isActive
-                      ? 'bg-rose-100 text-rose-700'
-                      : 'text-zinc-600 hover:bg-rose-50 hover:text-rose-600'
+                      ? 'bg-[var(--bg-sub)] text-[var(--text-main)]'
+                      : 'text-[var(--text-muted)] hover:bg-[var(--bg-sub)] hover:text-[var(--text-main)]'
                   }`
                 }
               >
@@ -53,12 +53,19 @@ export function PublicLayout() {
         <Outlet />
       </main>
 
-      <footer className="border-t border-rose-100 bg-white/90">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-sm font-medium">Cocopua</p>
-            <p className="text-sm text-zinc-500">東京都〇〇区〇〇 1-2-3 / 10:00-19:00 / 最寄り駅: 〇〇駅</p>
+      <footer className="mt-10 border-t border-[var(--line-soft)] bg-white/85">
+        <div className="mx-auto grid max-w-6xl gap-5 px-4 py-8 sm:px-6 lg:grid-cols-3 lg:items-center">
+          <div className="flex items-center gap-3">
+            <img src={logo} alt="Cocopua ロゴ" className="h-12 w-12 rounded-full border border-[var(--line-soft)] object-cover" />
+            <div>
+              <p className="font-serif-en text-2xl">Cocopua</p>
+              <p className="font-ui text-xs text-[var(--text-muted)]">Beauté du Regard</p>
+            </div>
           </div>
+          <div className="font-ui text-sm text-[var(--text-muted)]">
+            東京都〇〇区〇〇 1-2-3 / 10:00-19:00 / 最寄り駅: 〇〇駅
+          </div>
+          <div className="font-ui text-sm text-[var(--text-muted)] lg:text-right">© Cocopua Beauté du Regard</div>
         </div>
       </footer>
     </div>

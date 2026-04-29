@@ -1,26 +1,42 @@
 import { Link } from 'react-router-dom'
 
-const newsItems = [
-  { id: 'welcome', title: 'サイトを公開しました', date: '2026-04-22' },
-  { id: 'campaign', title: '春のまつげパーマキャンペーン', date: '2026-04-20' },
-]
+import { useNewsList } from '@/features/news/hooks/useNewsList'
+
+function formatDate(dateText: string) {
+  return new Date(dateText).toLocaleDateString('ja-JP', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  })
+}
 
 export function NewsListPage() {
+  const { newsList, isLoading, error } = useNewsList()
+
   return (
     <section className="mx-auto max-w-6xl px-4 py-12">
-      <h1 className="text-3xl font-semibold">News</h1>
-      <div className="mt-8 grid gap-3">
-        {newsItems.map((news) => (
-          <Link
-            key={news.id}
-            to={`/news/${news.id}`}
-            className="rounded-2xl border border-rose-100 bg-white p-5 transition hover:border-rose-200"
-          >
-            <p className="text-xs text-zinc-500">{news.date}</p>
-            <p className="mt-2 text-base font-medium">{news.title}</p>
-          </Link>
-        ))}
-      </div>
+      <h1 className="font-serif-en text-4xl text-[var(--text-main)]">News</h1>
+
+      {isLoading ? (
+        <div className="mt-8 h-28 animate-pulse rounded-2xl border border-[var(--line-soft)] bg-white/70" />
+      ) : null}
+
+      {error ? <p className="mt-6 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">{error}</p> : null}
+
+      {!isLoading && !error ? (
+        <div className="mt-8 grid gap-3">
+          {newsList.map((news) => (
+            <Link
+              key={news.id}
+              to={`/news/${news.id}`}
+              className="rounded-2xl border border-[var(--line-soft)] bg-white p-5 transition hover:border-[#d9c1bb]"
+            >
+              <p className="text-xs text-[var(--text-muted)]">{formatDate(news.date)}</p>
+              <p className="mt-2 text-base font-medium text-[var(--text-main)]">{news.title}</p>
+            </Link>
+          ))}
+        </div>
+      ) : null}
     </section>
   )
 }
