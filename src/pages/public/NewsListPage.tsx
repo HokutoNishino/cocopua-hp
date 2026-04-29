@@ -11,6 +11,12 @@ function formatDate(dateText: string) {
   })
 }
 
+function resolveCategoryNames(categoryIds: number[], categories: Array<{ id: number; name: string }>) {
+  return categoryIds
+    .map((categoryId) => categories.find((category) => category.id === categoryId)?.name)
+    .filter((name): name is string => Boolean(name))
+}
+
 export function NewsListPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   const {
@@ -137,6 +143,18 @@ export function NewsListPage() {
               >
                 <p className="text-xs text-[var(--text-muted)]">{formatDate(news.date)}</p>
                 <p className="mt-2 text-base font-medium text-[var(--text-main)]">{news.title}</p>
+                {resolveCategoryNames(news.categoryIds, categories).length > 0 ? (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {resolveCategoryNames(news.categoryIds, categories).map((categoryName) => (
+                      <span
+                        key={`${news.id}-${categoryName}`}
+                        className="rounded-full border border-[var(--line-soft)] bg-[var(--bg-sub)] px-3 py-1 font-ui text-xs text-[var(--text-muted)]"
+                      >
+                        {categoryName}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
               </Link>
             ))}
 

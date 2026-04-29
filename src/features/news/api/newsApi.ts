@@ -35,6 +35,9 @@ const fallbackCategories: NewsCategory[] = [
   { id: 2, name: 'キャンペーン' },
 ]
 
+const categoryFilterKeys = ['categories', 'news_category'] as const
+const categoryEndpoints = ['categories', 'news_category', 'news-category'] as const
+
 function normalizeNews(item: WpNewsItem): NewsItem {
   return {
     id: item.id,
@@ -92,28 +95,42 @@ export async function fetchNewsList(query: NewsListQuery = {}): Promise<NewsList
   }
 
   try {
-    const params = new URLSearchParams({
-      status: 'publish',
-      per_page: String(perPage),
-      page: String(page),
-      orderby: 'date',
-      order: 'desc',
-    })
+    let response: Response | null = null
 
-    if (search) {
-      params.set('search', search)
+    for (const filterKey of categoryFilterKeys) {
+      const params = new URLSearchParams({
+        status: 'publish',
+        per_page: String(perPage),
+        page: String(page),
+        orderby: 'date',
+        order: 'desc',
+      })
+
+      if (search) {
+        params.set('search', search)
+      }
+
+      if (categoryId) {
+        params.set(filterKey, String(categoryId))
+      }
+
+      response = await fetch(`${baseUrl}/wp-json/wp/v2/news?${params.toString()}`)
+
+      if (response.ok) {
+        break
+      }
+
+      if (!categoryId) {
+        break
+      }
+
+      if (response.status !== 400) {
+        break
+      }
     }
 
-    if (categoryId) {
-      params.set('categories', String(categoryId))
-    }
-
-    const response = await fetch(
-      `${baseUrl}/wp-json/wp/v2/news?${params.toString()}`,
-    )
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch news list: ${response.status}`)
+    if (!response || !response.ok) {
+      throw new Error(`Failed to fetch news list: ${response?.status ?? 'unknown'}`)
     }
 
     const totalPagesHeader = response.headers.get('X-WP-TotalPages')
@@ -144,14 +161,20 @@ export async function fetchNewsCategories(): Promise<NewsCategory[]> {
   }
 
   try {
-    const response = await fetch(`${baseUrl}/wp-json/wp/v2/categories?per_page=100&orderby=count&order=desc`)
+    for (const endpoint of categoryEndpoints) {
+      const response = await fetch(
+        `${baseUrl}/wp-json/wp/v2/${endpoint}?per_page=100&orderby=count&order=desc`,
+      )
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch categories: ${response.status}`)
+      if (!response.ok) {
+        continue
+      }
+
+      const data = (await response.json()) as WpNewsCategory[]
+      return data.map((item) => ({ id: item.id, name: item.name }))
     }
 
-    const data = (await response.json()) as WpNewsCategory[]
-    return data.map((item) => ({ id: item.id, name: item.name }))
+    return fallbackCategories
   } catch {
     return fallbackCategories
   }
