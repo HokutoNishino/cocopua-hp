@@ -11,7 +11,7 @@ function formatDate(dateText: string) {
 }
 
 export function NewsListPage() {
-  const { newsList, isLoading, error } = useNewsList()
+  const { newsList, isLoading, error, page, totalPages, setPage } = useNewsList()
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-12">
@@ -24,18 +24,42 @@ export function NewsListPage() {
       {error ? <p className="mt-6 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-700">{error}</p> : null}
 
       {!isLoading && !error ? (
-        <div className="mt-8 grid gap-3">
-          {newsList.map((news) => (
-            <Link
-              key={news.id}
-              to={`/news/${news.id}`}
-              className="rounded-2xl border border-[var(--line-soft)] bg-white p-5 transition hover:border-[#d9c1bb]"
+        <>
+          <div className="mt-8 grid gap-3">
+            {newsList.map((news) => (
+              <Link
+                key={news.id}
+                to={`/news/${news.id}`}
+                className="rounded-2xl border border-[var(--line-soft)] bg-white p-5 transition hover:border-[#d9c1bb]"
+              >
+                <p className="text-xs text-[var(--text-muted)]">{formatDate(news.date)}</p>
+                <p className="mt-2 text-base font-medium text-[var(--text-main)]">{news.title}</p>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-8 flex items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={() => setPage((current) => Math.max(1, current - 1))}
+              disabled={page <= 1}
+              className="btn-pill border border-[var(--line-soft)] bg-white text-sm text-[var(--text-main)] disabled:cursor-not-allowed disabled:opacity-40"
             >
-              <p className="text-xs text-[var(--text-muted)]">{formatDate(news.date)}</p>
-              <p className="mt-2 text-base font-medium text-[var(--text-main)]">{news.title}</p>
-            </Link>
-          ))}
-        </div>
+              前へ
+            </button>
+            <p className="font-ui text-sm text-[var(--text-muted)]">
+              {page} / {totalPages}
+            </p>
+            <button
+              type="button"
+              onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
+              disabled={page >= totalPages}
+              className="btn-pill border border-[var(--line-soft)] bg-white text-sm text-[var(--text-main)] disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              次へ
+            </button>
+          </div>
+        </>
       ) : null}
     </section>
   )

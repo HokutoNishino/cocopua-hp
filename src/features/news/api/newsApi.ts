@@ -1,5 +1,10 @@
 import type { NewsItem, WpNewsItem } from '@/features/news/types'
 
+export type NewsListResult = {
+  items: NewsItem[]
+  totalPages: number
+}
+
 const fallbackNewsList: NewsItem[] = [
   {
     id: 101,
@@ -31,26 +36,43 @@ function getApiBaseUrl() {
   return import.meta.env.VITE_API_URL?.replace(/\/$/, '')
 }
 
-export async function fetchNewsList(): Promise<NewsItem[]> {
+export async function fetchNewsList(page = 1, perPage = 10): Promise<NewsListResult> {
   const baseUrl = getApiBaseUrl()
 
   if (!baseUrl) {
-    return fallbackNewsList
+    const totalPages = Math.max(1, Math.ceil(fallbackNewsList.length / perPage))
+    const start = (page - 1) * perPage
+    const end = start + perPage
+    return {
+      items: fallbackNewsList.slice(start, end),
+      totalPages,
+    }
   }
 
   try {
     const response = await fetch(
-      `${baseUrl}/wp-json/wp/v2/news?status=publish&per_page=10&orderby=date&order=desc`,
+      `${baseUrl}/wp-json/wp/v2/news?status=publish&per_page=${perPage}&page=${page}&orderby=date&order=desc`,
     )
 
     if (!response.ok) {
       throw new Error(`Failed to fetch news list: ${response.status}`)
     }
 
+    const totalPagesHeader = response.headers.get('X-WP-TotalPages')
+    const totalPages = totalPagesHeader ? Number(totalPagesHeader) : 1
     const data = (await response.json()) as WpNewsItem[]
-    return data.map(normalizeNews)
+    return {
+      items: data.map(normalizeNews),
+      totalPages: Number.isNaN(totalPages) || totalPages < 1 ? 1 : totalPages,
+    }
   } catch {
-    return fallbackNewsList
+    const totalPages = Math.max(1, Math.ceil(fallbackNewsList.length / perPage))
+    const start = (page - 1) * perPage
+    const end = start + perPage
+    return {
+      items: fallbackNewsList.slice(start, end),
+      totalPages,
+    }
   }
 }
 

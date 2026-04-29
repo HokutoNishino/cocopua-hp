@@ -4,7 +4,10 @@ import { fetchNewsList } from '@/features/news/api/newsApi'
 import type { NewsItem } from '@/features/news/types'
 
 export function useNewsList() {
+  const perPage = 6
+  const [page, setPage] = useState(1)
   const [newsList, setNewsList] = useState<NewsItem[]>([])
+  const [totalPages, setTotalPages] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -16,9 +19,10 @@ export function useNewsList() {
       setError(null)
 
       try {
-        const data = await fetchNewsList()
+        const data = await fetchNewsList(page, perPage)
         if (!isMounted) return
-        setNewsList(data)
+        setNewsList(data.items)
+        setTotalPages(data.totalPages)
       } catch {
         if (!isMounted) return
         setError('お知らせの取得に失敗しました。')
@@ -33,7 +37,7 @@ export function useNewsList() {
     return () => {
       isMounted = false
     }
-  }, [])
+  }, [page])
 
-  return { newsList, isLoading, error }
+  return { newsList, isLoading, error, page, totalPages, setPage }
 }
