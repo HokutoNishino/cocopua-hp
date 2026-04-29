@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom'
 
-import { ReservationCta } from '@/components/common/ReservationCta'
-
 export function TopPage() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
@@ -13,8 +11,7 @@ export function TopPage() {
           初めての方でも不安なくご来店いただけるよう、施術内容や料金を分かりやすくご案内します。
         </p>
 
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <ReservationCta />
+        <div className="mt-8">
           <Link
             to="/menu"
             className="inline-flex min-h-11 items-center justify-center rounded-xl border border-rose-200 bg-white px-5 py-3 text-sm font-medium text-rose-600 transition hover:bg-rose-50"

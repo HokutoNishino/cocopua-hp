@@ -1,5 +1,3 @@
-import { ReservationCta } from '@/components/common/ReservationCta'
-
 const cards = ['Natural Curl', 'Elegant Lash', 'Soft Volume', 'Brown Design']
 
 export function GalleryPage() {
@@ -15,10 +13,6 @@ export function GalleryPage() {
             <p className="mt-3 text-sm font-medium">{name}</p>
           </article>
         ))}
-      </div>
-
-      <div className="mt-8">
-        <ReservationCta />
       </div>
     </section>
   )

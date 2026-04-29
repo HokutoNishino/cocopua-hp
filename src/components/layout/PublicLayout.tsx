@@ -1,7 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom'
 
 import logo from '../../../assets/brand/cocopua-logo.jpg'
-import { ReservationCta } from '@/components/common/ReservationCta'
 
 const links = [
   { to: '/', label: 'Top' },
@@ -47,8 +46,6 @@ export function PublicLayout() {
               </NavLink>
             ))}
           </nav>
-
-          <ReservationCta className="hidden sm:inline-flex" />
         </div>
       </header>
 

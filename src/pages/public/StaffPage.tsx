@@ -1,5 +1,3 @@
-import { ReservationCta } from '@/components/common/ReservationCta'
-
 export function StaffPage() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-12">
@@ -15,10 +13,6 @@ export function StaffPage() {
           <p className="text-lg font-medium">Stylist B</p>
           <p className="mt-2 text-sm text-zinc-600">エクステの持続性と軽さを重視したデザインが得意です。</p>
         </article>
-      </div>
-
-      <div className="mt-8">
-        <ReservationCta />
       </div>
     </section>
   )

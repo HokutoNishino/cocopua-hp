@@ -1,5 +1,3 @@
-import { ReservationCta } from '@/components/common/ReservationCta'
-
 const faqs = [
   {
     q: '初めてでも予約できますか？',
@@ -26,9 +24,6 @@ export function FaqPage() {
             <p className="mt-2 text-sm leading-relaxed text-zinc-600">A. {faq.a}</p>
           </article>
         ))}
-      </div>
-      <div className="mt-8">
-        <ReservationCta />
       </div>
     </section>
   )

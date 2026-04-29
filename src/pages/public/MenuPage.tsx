@@ -1,5 +1,3 @@
-import { ReservationCta } from '@/components/common/ReservationCta'
-
 const menuItems = [
   { name: 'まつげパーマ', duration: '60分', price: '¥6,600' },
   { name: 'フラットラッシュ 100本', duration: '75分', price: '¥7,700' },
@@ -31,10 +29,6 @@ export function MenuPage() {
             ))}
           </tbody>
         </table>
-      </div>
-
-      <div className="mt-8">
-        <ReservationCta />
       </div>
     </section>
   )

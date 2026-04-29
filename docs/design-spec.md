@@ -12,7 +12,7 @@
 
 ### 2.1 対象
 
-- 公開サイト（サロン紹介 + 予約導線）
+- 公開サイト（サロン紹介）
 - お知らせ機能（一覧・詳細）
 - 管理向けお知らせ投稿画面（投稿・編集・削除・公開管理）
 
@@ -27,7 +27,6 @@
 - フロントエンド: React + TypeScript + Vite
 - UI: Tailwind CSS + shadcn/ui
 - ルーティング: React Router（導入予定）
-- 予約: 外部SaaSリンク連携（URLは環境変数管理）
 
 ## 4. 画面設計
 
@@ -39,14 +38,12 @@
 - `/staff` Staff
 - `/access` Access
 - `/faq` FAQ
-- `/reservation` Reservation
 - `/news` News一覧
 - `/news/:id` News詳細
 
 ### 画面共通要件
 
 - ヘッダーにロゴと主要導線を配置する。
-- 予約CTAを「ファーストビュー」と「ページ末尾」に配置する。
 - フッターに店舗情報（住所・営業時間・最寄り駅）を表示する。
 
 ## 4.2 管理画面
@@ -86,7 +83,6 @@ export type NewsItem = {
 
 - 共通UIは `src/components` 配下へ配置する。
 - 機能固有は `src/features/news` に閉じ込める。
-- 共通CTAは `ReservationCta` として共通化する。
 - 画面は `src/pages/public` と `src/pages/admin` で分離する。
 
 ## 7. 非機能要件
@@ -111,8 +107,6 @@ export type NewsItem = {
 
 ## 8. 受け入れ基準
 
-- 公開画面の全主要ページに予約CTAがある。
-- 予約CTAから外部SaaSへ遷移できる。
 - お知らせ管理画面でCRUD+公開管理が可能。
 - 公開/非公開の切替が公開画面に反映される。
 - スマートフォン幅（360px-430px）でUI崩れがない。

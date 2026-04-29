@@ -1,7 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
 
-import { ReservationCta } from '@/components/common/ReservationCta'
-
 export function NewsDetailPage() {
   const { id } = useParams()
 
@@ -19,9 +17,6 @@ export function NewsDetailPage() {
           </Link>
         </div>
       </article>
-      <div className="mt-8">
-        <ReservationCta />
-      </div>
     </section>
   )
 }

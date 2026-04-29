@@ -1,5 +1,3 @@
-import { ReservationCta } from '@/components/common/ReservationCta'
-
 export function AccessPage() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-12">
@@ -9,9 +7,6 @@ export function AccessPage() {
         <p>営業時間: 10:00 - 19:00（最終受付 18:00）</p>
         <p>定休日: 不定休</p>
         <p>最寄り駅: 〇〇駅 徒歩5分</p>
-      </div>
-      <div className="mt-8">
-        <ReservationCta />
       </div>
     </section>
   )

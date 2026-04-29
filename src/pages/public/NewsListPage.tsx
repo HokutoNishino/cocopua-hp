@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom'
 
-import { ReservationCta } from '@/components/common/ReservationCta'
-
 const newsItems = [
   { id: 'welcome', title: 'サイトを公開しました', date: '2026-04-22' },
   { id: 'campaign', title: '春のまつげパーマキャンペーン', date: '2026-04-20' },
@@ -22,9 +20,6 @@ export function NewsListPage() {
             <p className="mt-2 text-base font-medium">{news.title}</p>
           </Link>
         ))}
-      </div>
-      <div className="mt-8">
-        <ReservationCta />
       </div>
     </section>
   )

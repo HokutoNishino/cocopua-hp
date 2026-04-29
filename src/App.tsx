@@ -8,7 +8,6 @@ import { MenuPage } from '@/pages/public/MenuPage'
 import { NewsDetailPage } from '@/pages/public/NewsDetailPage'
 import { NewsListPage } from '@/pages/public/NewsListPage'
 import { NotFoundPage } from '@/pages/public/NotFoundPage'
-import { ReservationPage } from '@/pages/public/ReservationPage'
 import { StaffPage } from '@/pages/public/StaffPage'
 import { TopPage } from '@/pages/public/TopPage'
 
@@ -22,7 +21,6 @@ function App() {
         <Route path="/staff" element={<StaffPage />} />
         <Route path="/access" element={<AccessPage />} />
         <Route path="/faq" element={<FaqPage />} />
-        <Route path="/reservation" element={<ReservationPage />} />
         <Route path="/news" element={<NewsListPage />} />
         <Route path="/news/:id" element={<NewsDetailPage />} />
         <Route path="/404" element={<NotFoundPage />} />
