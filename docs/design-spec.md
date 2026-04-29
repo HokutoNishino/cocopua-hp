@@ -32,3 +32,10 @@
 - API/運用変更は `docs/backend-spec.md` を更新する。
 - DB変更は `docs/database-spec.md` を更新する。
 - 横断的な変更は3文書すべてで整合を取る。
+
+## 6. 実装チケット
+
+- ロードマップ: `docs/tickets/roadmap.md`
+- フロントエンド: `docs/tickets/frontend-tickets.md`
+- バックエンド: `docs/tickets/backend-tickets.md`
+- DB: `docs/tickets/database-tickets.md`
